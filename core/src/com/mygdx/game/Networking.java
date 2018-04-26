@@ -26,9 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -88,27 +88,43 @@ public class Networking extends ApplicationAdapter {
 
         // Now setup our scene UI
 
+        final Table tableGroup = new Table(skin).pad(5);
+        // tableGroup.setDebug(true);
+        tableGroup.setFillParent(true);
+
         // Vertical group groups contents vertically. I suppose that was probably pretty obvious
-        final VerticalGroup verticalGroup = new VerticalGroup().space(3).pad(5).fill();// .space(2).pad(5).fill();//.space(3).reverse().fill();
+        // final VerticalGroup verticalGroup = new VerticalGroup().space(3).pad(5).fill();// .space(2).pad(5).fill();//.space(3).reverse().fill();
         // Set the bounds of the group to the entire virtual display
-        verticalGroup.setBounds(0, 0, VIRTUAL_SCREEN_WIDTH, VIRTUAL_SCREEN_HEIGHT);
+        // verticalGroup.setBounds(0, 0, VIRTUAL_SCREEN_WIDTH, VIRTUAL_SCREEN_HEIGHT);
 
         // Create our controls
+        final Label detailsText = new Label("IP-Adressen", skin);
         labelDetails = new Label(ipAddressesBuilder.toString(), skin);
-        labelMessage = new Label("Hello world", skin);
+        final Label lastMessage = new Label("Last Message:", skin);
+        labelMessage = new Label("None", skin);
         button = new TextButton("Send message", skin);
+        final Label receiverText = new Label("Empfänger", skin);
         textIPAddress = new TextArea("", skin);
+        final Label messageText = new Label("Message to send:", skin);
         textMessage = new TextArea("", skin);
 
         // Add them to scene
-        verticalGroup.addActor(labelDetails);
-        verticalGroup.addActor(labelMessage);
-        verticalGroup.addActor(textIPAddress);
-        verticalGroup.addActor(textMessage);
-        verticalGroup.addActor(button);
+        tableGroup.add(detailsText);
+        tableGroup.add(labelDetails);
+        tableGroup.row();
+        tableGroup.add(lastMessage);
+        tableGroup.add(labelMessage);
+        tableGroup.row();
+        tableGroup.add(receiverText);
+        tableGroup.add(textIPAddress);
+        tableGroup.row();
+        tableGroup.add(messageText);
+        tableGroup.add(textMessage);
+        tableGroup.row();
+        tableGroup.add(button).colspan(2);
 
         // Add scene to stage
-        stage.addActor(verticalGroup);
+        stage.addActor(tableGroup);
 
         // Setup a viewport to map screen to a 480x640 virtual resolution
         // As otherwise this is way too tiny on my 1080p android phone.
